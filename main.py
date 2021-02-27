@@ -5,10 +5,12 @@ import time, random, logging
 from datetime import datetime
 
 #Enable below to trade with fyers
-#from classes import bridge as bridge
+from classes import bridge as bridge
+broker_name = "Fyers"
 
 #Enable below to trade with sas onlne alpha
-from classes import alpha as bridge
+# from classes import alpha as bridge
+# broker_name = "SAS Online"
 
 
 log = logging.getLogger("IndiBotLog")
@@ -62,6 +64,7 @@ def word_count(str):
 
 
 if __name__ == '__main__':
+    print("******** Broker : "+ broker_name + " *********")
 
     first_time = False
     while True:
