@@ -1,0 +1,23 @@
+S.No.,Symbol,Buy / Sell,Quantity,Profit/Price Gap % ,Margin price min/max,Stock Price,Active,Close Position,First Time
+1,ITC,buy,50,0.4,0.1,419.15,No,No,Yes
+2,GNFC,sell,50,0.4,0.1,224.35,No,No,Yes
+3,JSWSTEEL,SELL,50,0.4,0.1,407,No,No,Yes
+4,BPCL,buy,25,0.4,0.15,418.8,No,No,Yes
+5,ASIANPAINT,buy,10,0.4,0.5,2387.05,No,No,Yes
+6,BERGEPAINT,buy,25,0.4,0.15,729.85,No,No,Yes
+7,DABUR,sell,25,0.4,0.15,500.35,No,No,Yes
+8,BRITANNIA,sell,10,0.4,0.5,3341.2,No,No,Yes
+9,TITAN,sell,10,0.4,0.25,"1,426.80",No,No,Yes
+10,RELIANCE,sell,5,0.4,0.5,"2,026.15",No,No,Yes
+11,INDIANOIL,sell,50,0.4,0.05,97.9,No,No,Yes
+12,INDIGO,buy,10,0.4,0.25,"1,530.00",No,No,Yes
+13,INFY,buy,15,0.4,0.25,1265.2,No,No,Yes
+14,WIPRO,buy,25,0.4,0.15,418.7,No,No,Yes
+15,HCLTECH,buy,15,0.4,0.15,911.45,No,No,Yes
+16,YESBANK,buy,15,0.4,0.15,16.8,No,No,Yes
+17,AXISBANK,sell,25,0.4,0.15,752.8,Yes,No,Yes
+18,SBIN,buy,25,0.25,0.15,387.95,Yes,No,Yes
+19,ICICIBANK,buy,25,0.4,0.15,614.05,Yes,No,Yes
+20,UPL,buy,25,0.3,0.15,555,Yes,No,Yes
+21,AMBUJACEM,sell,25,0.4,0.1,271.2,No,No,Yes
+22,TATAMOTORS,buy,25,0.4,0.1,321.2,Yes,No,Yes
