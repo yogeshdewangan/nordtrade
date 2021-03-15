@@ -5,13 +5,13 @@ import time, random, logging
 from datetime import datetime
 
 # Enable below to trade with fyers
-# from classes import bridge as bridge
-#
-# broker_name = "Fyers"
+from classes import bridge as bridge
+broker_name = "Fyers"
 
-# # Enable below to trade with sas onlne alpha
-from classes import alpha as bridge
-broker_name = "SAS Online"
+# Enable below to trade with sas onlne alpha
+# from classes import alpha as bridge
+# broker_name = "SAS Online"
+
 
 log = logging.getLogger("IndiBotLog")
 
@@ -46,7 +46,7 @@ def calculate_percentage(price, percentage, margin_price):
 def log_stock(symbol, data):
     try:
         with open("stock_data/" + symbol + ".txt", "a") as f:
-            f.write(str(datetime.now()) + " - " + data + "\n")
+            f.write(str(datetime.now()) + " - " + data +"\n")
     except:
         pass
 
@@ -67,7 +67,7 @@ def word_count(str):
 def stop_loss_per_calculate(current_price, per, buy_or_sell):
     per = float(per)
     current_price = float(current_price)
-    if per == 0.0:
+    if per ==0.0:
         if broker_name == "Fyers":
             return 0
         else:
@@ -76,28 +76,7 @@ def stop_loss_per_calculate(current_price, per, buy_or_sell):
         stop_loss = current_price - (current_price * (per / 100))
     else:
         stop_loss = current_price + (current_price * (per / 100))
-    sl = round(stop_loss, 2)
-    return __round_nearest(sl, 0.05)
-
-
-def __round_nearest(x, a):
-    return round((round(x / a) * a), 2)
-
-
-def check_buy_sell_count(stock, buy_or_sell):
-    stock_orders = str(stock.order).rstrip(' ')
-    orders = stock_orders.split(' ')
-    orders.reverse()
-    count = 0
-    for order in orders:
-        if order == buy_or_sell:
-            count += 1
-            continue
-        else:
-            break
-    if count >= 3:
-        return False
-    return True
+    return round(stop_loss,2)
 
 
 if __name__ == '__main__':
@@ -118,15 +97,14 @@ if __name__ == '__main__':
                 if not stock.symbol in stop_list:
                     try:
                         current_price = truedata.get_current_data(stock.req_code)
-
                         stop_loss = stop_loss_per_calculate(current_price, stock.stop_loss_per, stock.buy_or_sell)
                         is_placed = bridge.purchase_stock(symbol=stock.symbol, quantity=stock.quantity, buy_or_sell=stock.buy_or_sell,
                                                           current_price=current_price, stop_loss=stop_loss)
                         if is_placed:
                             print("Current price: {}".format(current_price))
                             print_str = "[First Order] " + stock.symbol + " " + stock.buy_or_sell.capitalize() + " - price: " + str(
-                                current_price) + " quantity: " + str(stock.quantity) + " Stop Loss: " + str(stop_loss)
-                            stock.order += stock.buy_or_sell + " "
+                                current_price) + " quantity: " + str(stock.quantity) + " Stop Loss: " +str(stop_loss)
+                            stock.order += stock.buy_or_sell.capitalize() + " "
                             log.info(print_str)
                             print(print_str)
                             stock.ltp = current_price
@@ -158,49 +136,40 @@ if __name__ == '__main__':
                     print("Negative Var2: {}".format(neg_value_var2))
 
                     if current_price <= pos_value_var1 and current_price >= pos_value_var2:
-                        ready_to_trade = check_buy_sell_count(stock, "sell")
-                        if ready_to_trade:
-                            stop_loss = stop_loss_per_calculate(current_price, stock.stop_loss_per, stock.buy_or_sell)
-                            is_placed = bridge.purchase_stock(symbol=stock.symbol, quantity=int(stock.quantity), buy_or_sell="sell",
-                                                              current_price=current_price,
-                                                              stop_loss=stop_loss)
-                            if is_placed:
-                                print_str = "Positive Var1: {} | Positive Var2: {} | Negative Var1: {} | Negative Var2: {}".format(str(pos_value_var1),
-                                                                                                                                   str(pos_value_var2),
-                                                                                                                                   str(neg_value_var1),
-                                                                                                                                   str(neg_value_var2))
-                                print(print_str)
-                                log.info(print_str)
-                                print_str = stock.symbol + " SELL - price: " + str(current_price) + " quantity: " + str(
-                                    int(stock.quantity)) + " Stop Loss: " + str(stop_loss)
-                                stock.order += "sell "
-                                log.info(print_str)
-                                stock.ltp = current_price
-                                log_stock(stock.symbol, print_str)
-                        else:
-                            print("Not ready to trade. Trying a [sell] Order List: {}".format(str(stock.order)))
+                        stop_loss = stop_loss_per_calculate(current_price, stock.stop_loss_per, stock.buy_or_sell)
+                        is_placed = bridge.purchase_stock(symbol=stock.symbol, quantity=int(stock.quantity), buy_or_sell="sell", current_price=current_price,
+                                                          stop_loss=stop_loss)
+                        if is_placed:
+                            print_str = "Positive Var1: {} | Positive Var2: {} | Negative Var1: {} | Negative Var2: {}".format(str(pos_value_var1),
+                                                                                                                               str(pos_value_var2),
+                                                                                                                               str(neg_value_var1),
+                                                                                                                               str(neg_value_var2))
+                            print(print_str)
+                            log.info(print_str)
+                            print_str = stock.symbol + " SELL - price: " + str(current_price) + " quantity: " + str(
+                                int(stock.quantity)) + " Stop Loss: " + str(stop_loss)
+                            stock.order += "Sell "
+                            log.info(print_str)
+                            stock.ltp = current_price
+                            log_stock(stock.symbol, print_str)
 
-                    if neg_value_var1 >= current_price >= neg_value_var2:
-                        ready_to_trade = check_buy_sell_count(stock, "buy")
-                        if ready_to_trade:
-                            stop_loss = stop_loss_per_calculate(current_price, stock.stop_loss_per, stock.buy_or_sell)
-                            is_placed = bridge.purchase_stock(symbol=stock.symbol, quantity=int(stock.quantity), buy_or_sell="buy", current_price=current_price,
-                                                              stop_loss=stop_loss)
-                            if is_placed:
-                                print_str = "Positive Var1: {} | Positive Var2: {} | Negative Var1: {} | Negative Var2: {}".format(str(pos_value_var1),
-                                                                                                                                   str(pos_value_var2),
-                                                                                                                                   str(neg_value_var1),
-                                                                                                                                   str(neg_value_var2))
-                                print(print_str)
-                                log.info(print_str)
-                                print_str = stock.symbol + " BUY - price: " + str(current_price) + " quantity: " + str(
-                                    int(stock.quantity)) + " Stop Loss: " + str(stop_loss)
-                                stock.order += "buy "
-                                log.info(print_str)
-                                stock.ltp = current_price
-                                log_stock(stock.symbol, print_str)
-                        else:
-                            print("Not ready to trade. Trying a [buy] - Order List: {}".format(str(stock.order)))
+                    if current_price <= neg_value_var1 and current_price >= neg_value_var2:
+                        stop_loss = stop_loss_per_calculate(current_price, stock.stop_loss_per, stock.buy_or_sell)
+                        is_placed = bridge.purchase_stock(symbol=stock.symbol, quantity=int(stock.quantity), buy_or_sell="buy", current_price=current_price,
+                                                          stop_loss=stop_loss)
+                        if is_placed:
+                            print_str = "Positive Var1: {} | Positive Var2: {} | Negative Var1: {} | Negative Var2: {}".format(str(pos_value_var1),
+                                                                                                                               str(pos_value_var2),
+                                                                                                                               str(neg_value_var1),
+                                                                                                                               str(neg_value_var2))
+                            print(print_str)
+                            log.info(print_str)
+                            print_str = stock.symbol + " BUY - price: " + str(current_price) + " quantity: " + str(
+                                int(stock.quantity)) + " Stop Loss: " + str(stop_loss)
+                            stock.order += "Buy "
+                            log.info(print_str)
+                            stock.ltp = current_price
+                            log_stock(stock.symbol, print_str)
 
                 except Exception:
                     log.info("Exception: {}".format(traceback.print_exc()))

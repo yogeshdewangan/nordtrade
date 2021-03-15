@@ -40,9 +40,10 @@ with open('data1.csv') as csv_file:
             stock.quantity = row[3]
             stock.profit_price_gap_perc = row[4]
             stock.margin_price = row[5]
+            stock.stop_loss_per = row[6]
             stock.req_code = stock_req_code
             stock_req_code += 1
-            if row[7].capitalize() == "yes".capitalize():
+            if row[8].capitalize() == "yes".capitalize():
                 MYDEF.append(stock)
                 line_count += 1
                 print_str = "Stock: {} | Buy/Sell: {} | Quantity: {} | Price Gap %: {} | Margin Price: {} | Request Code: {}".format(stock.symbol,

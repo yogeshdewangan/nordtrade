@@ -6,6 +6,7 @@ class STOCK:
     buy_or_sell = "buy"
     ltp = 0
     order = ""
+    stop_loss_per = 0
 
 
 
